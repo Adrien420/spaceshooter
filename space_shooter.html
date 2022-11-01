@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+
+    <head>
+        <title>Le premier jeu (nom qui doit changer)</title>
+        <meta charset="UTF-8" />
+
+        <link type="text/css" rel="stylesheet" href="style/style_NomJeu.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
+        <script src="script/Tests.js"></script>
+    </head>
+
+
+    <body id="body">
+        <div id="divGold">
+            <img id="imgGold" src="images/gold.png" alt="or"/><span> x</span><span id="gold">0</span><span id="goldEnPlus"></span>
+        </div>
+        
+        <div id="menu">
+            <button id="start">Start</button>
+
+            <div id="choixMunitions">
+                <div class="case">
+                    <img id="mun1" class="chosen" src="images/munition.png" alt="munition basique" width="20" height="50"/>
+                </div>
+                <div class="case">
+                    <img id="mun2" class="unlock" src="images/energyBall.png" alt="munition multiple" width="40" height="40" />
+                    <span id="2price" class="price">500</span>
+                </div>
+                <div class="case">
+                    <img id="mun3" class="unlock" src="images/rocket.png" alt="munition explosive" width="20" height="50" />
+                    <span id="3price" class="price">1000</span>
+                </div>
+            </div>
+
+            <div id="confirmationMun">
+                <span id="messageMun"></span>
+                <span id="alerteMun"></span>
+                <button id="ouiMun">OUI</button>
+                <button id="annulerMun">ANNULER</button>
+            </div>
+
+            <div id="homeScore">
+                <span class="spanScore">Meilleur score : </span><span class="spanScore" id="bestScore">0</span>
+            </div>
+
+            <div id="backgroundCheat"></div>
+            <img id="cheat" src="images/crane.png" alt="Tete de mort" />
+            <input id="cheatInput" maxlength="13" size="16" />
+        </div>
+
+        <div id="jeu">
+            <div id="temps">
+                <span>Durée: </span><span id="minutes">0 minute et </span><span id="secondes">0 seconde</span>
+            </div>
+
+            <div id="vie">
+                <img id="vie1" src="images/coeurPlein.png" alt="coeur plein" />
+                <img id="vie2" src="images/coeurPlein.png" alt="coeur plein" />
+                <img id="vie3" src="images/coeurPlein.png" alt="coeur plein" />
+            </div>
+
+            <div id="score">
+                <span>Score : </span>
+                <span id="displayscore">0</span>
+                <span id="pointsEnPlus"></span>
+                <span id="bestScoreJeu"></span>
+            </div>
+
+            <canvas width="400" height="380" id="zoneJeu"></canvas>
+            <canvas width="600" height="580" id="zoneExt"></canvas>
+            <canvas width="600" height="580" id="zoneMob"></canvas>
+        </div>
+
+        <div id="menuPause">
+            <button id="reprise"></button>
+        </div>
+
+        <div id="death">
+            <span>D </span><span>E </span><span>A </span><span>T </span><span>H</span>
+        </div>
+
+        <div id="menuIntermediaire">
+            <button id="restart"></button>
+            <button id="goHome"></button>
+        </div>
+
+    </body>
+</html>
+

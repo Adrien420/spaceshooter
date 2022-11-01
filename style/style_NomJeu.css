@@ -1,0 +1,351 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  overflow: hidden;
+  position: absolute;
+}
+
+/* Gold */
+#divGold {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  background-color: #1d1e26;
+  border: 3px outset black;
+  padding: 8px;
+  box-shadow: 2px 2px 1px 1px rgba(68, 74, 95);
+}
+#divGold span {
+  color: yellow;
+  font-weight: bold;
+}
+
+/* Menu */
+#menu {
+  width: 100%;
+  height: 100%;
+}
+
+#start {
+  width: 200px;
+  height: 70px;
+  background-color: black;
+  color: white;
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+  font-size: 26px;
+  letter-spacing: 12px;
+  text-indent: 12px;
+  text-shadow: 2px 2px grey;
+  box-shadow: 3px 3px 3px 2px white;
+  border-radius: 15px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-100px, -35px);
+}
+
+#choixMunitions {
+  position: absolute;
+  right: 5px;
+  top: 200px;
+}
+
+.case {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 2px;
+  background-color: #1d1e26;
+  border: 2px black solid;
+}
+
+.case img {
+  position: relative;
+  left: 50%;
+  top: 50%;
+}
+
+.price {
+  display: none;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  z-index: 2;
+  font-size: 12px;
+  font-family: 'Times New Roman', serif;
+  color: yellow;
+}
+
+#confirmationMun {
+  display: none;
+  width: 400px;
+  height: 200px;
+  background-color: #272C42;
+  border-radius: 4%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-200px, -100px);
+}
+
+#confirmationMun::before {
+  background-image: none;
+}
+
+#ouiMun {
+  right: 20px;
+  bottom: 20px;
+}
+
+#annulerMun {
+  left: 20px;
+  bottom: 20px;
+}
+
+#annulerMun, #ouiMun {
+  position: absolute;
+  width: 90px;
+  height: 50px;
+  background-color: #384FC2;
+  border: white 2px solid;
+  border-radius: 5%;
+  font-weight: bold;
+  color: #1d1e26;
+}
+
+#messageMun {
+  display: inline-block;
+  margin: 8px;
+  text-align: center;
+  font-size: 16px;
+}
+
+#alerteMun {
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  margin-top: 15px;
+  text-align: center;
+  font-size: 15px;
+  color: red;
+}
+
+#homeScore {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%);
+  background-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+}
+
+#homeScore span {
+  display: inline-block;
+  line-height: 1em;
+}
+
+#start:hover {
+  color: yellow;
+  box-shadow: 3px 3px 3px 2px yellow;
+  border: 1.6px solid yellow;
+  text-shadow: 2px 2px red;
+}
+
+#cheat, #cheatInput, #backgroundCheat {
+  position: absolute;
+  right: 2px;
+  top : 2px;
+}
+
+#cheat {
+  right: 4px;
+  top: 4px;
+  z-index: 1;
+}
+
+#cheatInput {
+  display: none;
+  right: 40px;
+  top: 6px;
+  height: 19px;
+  text-align: center;
+  font-weight: bold;
+  border-style: none;
+  background-color: rgba(68, 74, 95, 0.8);
+}
+
+#cheatInput:focus {
+  border-style: none;
+  outline: none;
+  border: thin rgb(122, 124, 132) solid;
+}
+
+#backgroundCheat {
+  display: none; 
+  width: 190px;
+  height: 35px;
+  background-image: radial-gradient(circle at 50% 50%, #373b52, #252736 51%, #1d1e26);
+}
+
+/* Jeu */
+div#jeu * {
+  display: none;
+}
+
+span {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
+}
+
+div#temps {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+#temps * {
+  position: relative;
+  top: -610px;
+  left: 30px;
+}
+
+div::before {
+  content: "";
+  position: absolute;
+  background-image: url("../images/spacePixel.png");
+  background-size: cover;
+  opacity: 0.9;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
+
+#vie {
+  position: absolute;
+  left: 50%;
+  top: 95%;
+  transform: translate(-50%, -50%);
+}
+
+#vie * {
+  width: 20px;
+  margin-right: 10px;
+}
+
+#score {
+  position: absolute;
+  left: 50%;
+  top: 30px;
+  transform: translate(-50%);
+}
+
+#score span {
+  font-style: italic;
+}
+
+canvas#zoneJeu {
+  border: 1px black solid;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-200px, -190px);
+  background-color: transparent;
+  z-index: 1;
+}
+
+canvas#zoneExt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-300px, -290px);
+  background-color: transparent;
+  z-index: 0;
+}
+
+canvas#zoneMob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-300px, -290px);
+  background-color: transparent;
+  z-index: 1;
+}
+
+/* Menu Pause */
+#menuPause * {
+  width: 80px;
+  height: 80px;
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-image: url("../images/play2.png");
+  background-size: contain;
+  background-color: transparent;
+}
+
+#reprise {
+  border: none;
+}
+
+#reprise:hover {
+  background-image: url("../images/playHover.png");
+}
+
+/* Death */
+#death {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-0px, -0px);
+}
+
+#death span {
+  display: none;
+  font-weight: bold;
+  color: #A7171A;
+  text-shadow: 3px 3px 1px black;
+  font-size: 30px;
+}
+
+/* Menu intemédiaire */
+#menuIntermediaire {
+  position: absolute;
+  left: 50%;
+  top: 65%;
+  transform: translate(-50%);
+  z-index: 2;
+}
+
+#restart, #goHome {
+  display: none;
+  width: 70px;
+  height: 70px;
+  margin-right: 10px;
+  border: none;
+  background-color: transparent;
+  z-index: 2;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#restart {
+  background-image: url("../images/restart.png");
+}
+
+#goHome {
+  background-image: url("../images/home2.png");
+}
