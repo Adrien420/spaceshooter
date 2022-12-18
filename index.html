@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 
     <head>
-        <title>Le premier jeu (nom qui doit changer)</title>
+        <title>Spaceshooter</title>
         <meta charset="UTF-8" />
 
         <link type="text/css" rel="stylesheet" href="style/style_NomJeu.css" />
@@ -134,6 +134,13 @@
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
+        });
+    });
+    signOut.addEventListener('click',(e) => {
+        signOut(auth).then(() => {
+        // Sign-out successful.
+        }).catch((error) => {
+        // An error happened.
         });
     });
 
