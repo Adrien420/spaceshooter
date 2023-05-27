@@ -4,13 +4,85 @@ html, body {
   margin: 0px;
   overflow: hidden;
   position: absolute;
+  background-image: url("../images/spacePixel.png");
+  background-size: cover;
+}
+
+/* Google */
+
+#googleAccount {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 70px;
+  width: 70px;
+  background-image: radial-gradient(circle at 50% 50%, #373b52, #252736 51%, #1d1e26);
+  border: 3px outset black;
+  box-shadow: 2px 2px 1px 1px rgba(68, 74, 95);
+}
+
+#pseudo {
+  position: absolute;
+  top: 120px;
+  left: 29px;
+  border: 3px outset #396ABF;
+  box-shadow: 2px 2px 1px 1px #002B74;
+}
+
+#txtPseudo {
+  background-image: radial-gradient(circle at 50% 50%, #E9FFF9, #467599 70%, #1D3354);
+  border: 1px #294D8A;
+  font-weight: bold;
+  text-align: center;
+  color: #00203C;
+}
+
+#imLogin {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border-radius: 30px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+}
+
+#login {
+  float: left;
+  border-radius: 30px;
+  margin: 10px;
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
+}
+
+#imLogout {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  border-radius: 30px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+}
+
+#logout {
+  display: none;
+  float: left;
+  border-radius: 30px;
+  margin-top: 10px;
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
 }
 
 /* Gold */
 #divGold {
   position: absolute;
-  top: 50px;
-  left: 50px;
+  top: 130px;
+  right: 10px;
   background-color: #1d1e26;
   border: 3px outset black;
   padding: 8px;
@@ -206,28 +278,13 @@ span {
 
 div#temps {
   display: block;
-  height: 100%;
-  width: 100%;
-  position: relative;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 #temps * {
   position: relative;
-  top: -610px;
-  left: 30px;
-}
-
-div::before {
-  content: "";
-  position: absolute;
-  background-image: url("../images/spacePixel.png");
-  background-size: cover;
-  opacity: 0.9;
-  z-index: -1;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
 }
 
 #vie {

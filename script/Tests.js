@@ -1,7 +1,131 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+
 window.onload = function() {
+    // <===== Database =====>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAByHFKlgTGylA4QYKJMC9VRHMk4O6-6XI",
+        authDomain: "spaceshooter-adproject.firebaseapp.com",
+        databaseURL: "https://spaceshooter-adproject-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "spaceshooter-adproject",
+        storageBucket: "spaceshooter-adproject.appspot.com",
+        messagingSenderId: "320120443653",
+        appId: "1:320120443653:web:0fc508daaefbf8d20e5d6c",
+        measurementId: "G-FYB7YD8P2L"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    // <===== Initialisation des variables =====>
+    var pseudo = document.getElementById("txtPseudo");
+
     let pause = false;
     let mouseEventActif = false;
     let score = 0;
+    var tabImgMun = document.querySelectorAll(".case img");
+    var gold = document.getElementById("gold");
+    var bestScore = document.getElementById("bestScore");
+
+    // <===== Connexion =====>
+    auth.onAuthStateChanged(currentuser => {
+        if (currentuser) {
+            for (let i = 0; i < tabImgMun.length; i++) {
+                const TIMRef = ref(db, 'users/' + currentuser.uid + '/mun' + tabImgMun[i].id[3]);
+                get(TIMRef).then((snapshot) => {
+                    //console.log(snapshot.exists());
+                    //console.log(localStorage.getItem("classMunitions" + tabImgMun[i].id[3]));
+                    if (snapshot.exists() == false && localStorage.getItem("classMunitions" + tabImgMun[i].id[3])) {
+                        set(ref(db, 'users/' + currentuser.uid + '/mun' + tabImgMun[i].id[3]), {
+                            classMunitions : localStorage.getItem("classMunitions" + tabImgMun[i].id[3])
+                        });
+                        tabImgMun[i].className = localStorage.getItem("classMunitions" + tabImgMun[i].id[3]);
+
+                    }
+                }).catch((error) => {
+                    console.error('Erreur lors de la lecture des utilisateurs:', error);
+                });
+            }
+            const GRef = ref(db, 'users/' + currentuser.uid + '/currentGold');
+            get(GRef).then((snapshot) => {
+                if (snapshot.exists() == false && localStorage.getItem("currentGold")) {
+                    set(ref(db, 'users/' + currentuser.uid + '/currentGold'), {
+                        currentGold : localStorage.getItem("currentGold")
+                    });
+                    gold.innerHTML = localStorage.getItem("currentGold");
+                }
+            }).catch((error) => {
+                console.error('Erreur lors de la lecture des utilisateurs:', error);
+            });
+            const bestScoreRef = ref(db, 'users/' + currentuser.uid + '/bestScore');
+            get(bestScoreRef).then((snapshot) => {
+                if ((snapshot.exists() == false && localStorage.getItem("bestScoreRegistered")) || localStorage.getItem("bestScoreRegistered") > snapshot.val().bestScore) {
+                    set(ref(db, 'users/' + currentuser.uid + '/bestScore'), {
+                        bestScore : localStorage.getItem("bestScoreRegistered")
+                    });
+                    console.log(localStorage.getItem("bestScoreRegistered"));
+                    console.log(bestScore);
+                    bestScore.innerHTML = localStorage.getItem("bestScoreRegistered");
+                }
+            }).catch((error) => {
+                console.error('Erreur lors de la lecture des utilisateurs:', error);
+            });
+            const pseudoRef = ref(db, 'users/' + currentuser.uid + '/pseudo');
+            get(pseudoRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    console.log("test1");
+                    pseudo.value = snapshot.val().pseudo;
+                }
+            }).catch((error) => {
+                console.error('Erreur lors de la lecture des utilisateurs:', error);
+            });
+        }
+        else {
+            pseudo.value = "";
+        } 
+    });
+
+    // <===== Pseudo =====>
+    function dbPseudo() {
+        auth.onAuthStateChanged(currentuser => {
+            if (currentuser) {
+            const PORef = ref(db, 'users/' + currentuser.uid + '/pseudo');
+            get(PORef).then((snapshot) => {
+                if (pseudo.value == snapshot.val().pseudo) {
+                    console.log("test2");
+                    set(ref(db, 'users/' + currentuser.uid + '/pseudo'), {
+                        pseudo: pseudo.value
+                    });
+                }
+                else {
+                    //Utilisateur déconnecté
+                }
+            }).catch((error) => {
+                console.error('Erreur lors de la lecture des utilisateurs:', error);
+            });
+        }
+        });
+    }
+    pseudo.addEventListener("change", dbPseudo);
+
+    /*const usersRef = ref(db, 'users');
+    get(usersRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const users = snapshot.val();
+            Object.keys(users).forEach((userId) => {
+                const pseudo = users[userId].pseudo;
+                console.log(pseudo);
+            });
+        } else {
+            console.log('Aucun utilisateur trouvé');
+        }
+    }).catch((error) => {
+        console.error('Erreur lors de la lecture des utilisateurs:', error);
+    });*/
+
     // <===== Vie =====>
     function vie(nvie) {
         for (let i = 1; i <= nvie; i++) {
@@ -69,10 +193,36 @@ window.onload = function() {
             if (img.className == "unchosen" && (confirmPurchase.style.display == "none" || confirmPurchase.style.display == "")) {
                 var actualChosen = document.querySelector(".chosen");
                 actualChosen.className = "unchosen";
-                localStorage.setItem("classMunitions" + actualChosen.id[3], "unchosen");
+                
+                auth.onAuthStateChanged(currentuser => {
+                //Sauvegarde unchosen
+                if (currentuser) {
+                    set(ref(db, 'users/' + currentuser.uid + '/mun' + actualChosen.id[3]), {
+                        classMunitions : "unchosen"
+                    });
+                }
+                else {
+                    //Utilisateur déconnecté
+                    localStorage.setItem("classMunitions" + actualChosen.id[3], "unchosen");
+                }
+                });
+
                 actualChosen.parentNode.style.border = "2px black solid";
                 img.className = "chosen";
-                localStorage.setItem("classMunitions" + img.id[3], "chosen");
+
+                auth.onAuthStateChanged(currentuser => {
+                //Sauvegarde chosen
+                if (currentuser) {
+                    set(ref(db, 'users/' + currentuser.uid + '/mun' + img.id[3]), {
+                        classMunitions : "chosen"
+                    });
+                }
+                else {
+                    //Utilisateur déconnecté
+                    localStorage.setItem("classMunitions" + img.id[3], "chosen");
+                }
+                });
+
                 img.parentNode.style.border = "3px solid yellow";
                 let num = parseInt(img.id[3])-1;
                 typeMun = shootImages[num];
@@ -99,9 +249,31 @@ window.onload = function() {
             cadenasSupr.remove();
             document.getElementById(numId + "price").style.display = "none";
             img.className = "unchosen";
-            localStorage.setItem("classMunitions" + img.id[3], "unchosen");
+
+            //Sauvegarde unchosen
+            if (currentuser) {
+                set(ref(db, 'users/' + currentuser.uid + '/mun' + img.id[3]), {
+                    classMunitions : "unchosen"
+                });
+            }
+            else {
+                //Utilisateur déconnecté
+                localStorage.setItem("classMunitions" + img.id[3], "unchosen");
+            }
+
             gold.innerHTML = parseInt(gold.innerHTML) - currentPrice; 
-            localStorage.setItem("currentGold", gold.innerHTML);
+            
+            //Sauvegarde currentgold
+            if (currentuser) {
+                set(ref(db, 'users/' + currentuser.uid + '/currentGold'), {
+                    currentGold : gold.innerHTML
+                });
+            }
+            else {
+                //Utilisateur déconnecté
+                localStorage.setItem("currentGold", gold.innerHTML);
+            }
+
             confirmPurchase.style.display = "none";
             alerteMun.innerHTML = "";
         }
@@ -110,11 +282,56 @@ window.onload = function() {
         }
     }
 
-    var tabImgMun = document.querySelectorAll(".case img");
     for (let i = 0; i < tabImgMun.length; i++) {
-        if (localStorage.getItem("classMunitions" + tabImgMun[i].id[3])) {
-            tabImgMun[i].className = localStorage.getItem("classMunitions" + tabImgMun[i].id[3]);
+        auth.onAuthStateChanged(currentuser => {
+        //Lecture tabImMun
+        if (currentuser) {
+            const TIMRef = ref(db, 'users/' + currentuser.uid + '/mun' + tabImgMun[i].id[3]);
+            get(TIMRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const TIM = snapshot.val();
+                    tabImgMun[i].className = TIM.classMunitions;
+                    if (!(tabImgMun[i].className == "unlock")) {
+                        let num = i + 1;
+                        let cadenasSupr = document.getElementById(num + "cadenas");
+                        if (cadenasSupr) {
+                            cadenasSupr.remove();
+                            document.getElementById(num + "price").style.display = "none";
+                        }
+                        if (tabImgMun[i].className == "unchosen") {
+                            tabImgMun[i].parentNode.style.border = "2px black solid";
+                        }
+                        else {
+                            tabImgMun[i].parentNode.style.border = "3px solid yellow";
+                            typeMun = shootImages[i];
+                        }
+                    }
+                }
+            }).catch((error) => {
+                console.error('Erreur lors de la lecture des utilisateurs:', error);
+            });
+        } else {
+            //Utilisateur déconnecté
+            if (localStorage.getItem("classMunitions" + tabImgMun[i].id[3])) {
+                tabImgMun[i].className = localStorage.getItem("classMunitions" + tabImgMun[i].id[3]);
+                if (!(tabImgMun[i].className == "unlock")) {
+                    let num = i + 1;
+                    let cadenasSupr = document.getElementById(num + "cadenas");
+                    if (cadenasSupr) {
+                        cadenasSupr.remove();
+                        document.getElementById(num + "price").style.display = "none";
+                    }
+                    if (tabImgMun[i].className == "unchosen") {
+                        tabImgMun[i].parentNode.style.border = "2px black solid";
+                    }
+                    else {
+                        tabImgMun[i].parentNode.style.border = "3px solid yellow";
+                        typeMun = shootImages[i];
+                    }
+                }
+            }
         }
+        });
         var styleImg = window.getComputedStyle(tabImgMun[i]);
         var imgWidth = parseInt(styleImg.width)/2;
         var imgHeight = parseInt(styleImg.height)/2;
@@ -143,10 +360,25 @@ window.onload = function() {
     }
 
     // <===== Score =====>
-    var bestScore = document.getElementById("bestScore");
-    if (localStorage.getItem("bestScoreRegistered")) {
-        bestScore.innerHTML = localStorage.getItem("bestScoreRegistered");
+    auth.onAuthStateChanged(currentuser => {
+    //Lecture bestScore
+    if (currentuser) {
+        const bestScoreRef = ref(db, 'users/' + currentuser.uid + '/bestScore');
+        get(bestScoreRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const BS = snapshot.val();
+                bestScore.innerHTML = BS.bestScore;
+            }
+        }).catch((error) => {
+            console.error('Erreur lors de la lecture des utilisateurs:', error);
+        });
+    } else {
+        //Utilisateur déconnecté
+        if (localStorage.getItem("bestScoreRegistered")) {
+            bestScore.innerHTML = localStorage.getItem("bestScoreRegistered");
+        }
     }
+    });
 
     function animeScore() {
         anime.timeline().add({
@@ -161,7 +393,7 @@ window.onload = function() {
     }
     animeScore();
 
-    let animeBorders = "";
+    let animeBorders = null;
     function borderColors() {
         animeBorders = anime.timeline({loop:true}).add({
         targets: '#homeScore',
@@ -212,11 +444,25 @@ window.onload = function() {
 
     // <===== Argent =====>
     let saveGold = "";
-    var gold = document.getElementById("gold");
-    if (localStorage.getItem("currentGold")) {
-        gold.innerHTML = localStorage.getItem("currentGold");
+    auth.onAuthStateChanged(currentuser => {
+    //Lecture Gold
+    if (currentuser) {
+        const goldRef = ref(db, 'users/' + currentuser.uid + '/currentGold');
+        get(goldRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const Gold = snapshot.val();
+                gold.innerHTML = Gold.currentGold;
+            }
+        }).catch((error) => {
+            console.error('Erreur lors de la lecture des utilisateurs:', error);
+        });
+    } else {
+        //Utilisateur déconnecté
+        if (localStorage.getItem("currentGold")) {
+            gold.innerHTML = localStorage.getItem("currentGold");
+        }
     }
-
+    });
 
     // <===== Cheat Codes =====>
     var crane = document.getElementById("cheat");
@@ -229,7 +475,18 @@ window.onload = function() {
                 for (let i=0; i < tabImgMun.length; i++) {
                     if (tabImgMun[i].className == "unlock") {
                         tabImgMun[i].className = "unchosen";
-                        localStorage.setItem("classMunitions" + tabImgMun[i].id[3], "unchosen");
+                        auth.onAuthStateChanged(currentuser => {
+                        //Sauvegarde unchosen
+                        if (currentuser) {
+                            set(ref(db, 'users/' + currentuser.uid + '/mun' + tabImgMun[i].id[3]), {
+                                classMunitions : "unchosen"
+                            });
+                        }
+                        else {
+                            //Utilisateur déconnecté
+                            localStorage.setItem("classMunitions" + tabImgMun[i].id[3], "unchosen");
+                        }
+                        });
                         let numId = parseInt(tabImgMun[i].id[3]);
                         let cadenasSupr = document.getElementById(numId + "cadenas");
                         cadenasSupr.remove();
@@ -237,7 +494,7 @@ window.onload = function() {
                     }
                 }
             }
-            else {
+            /*else {
                 if (cheatInput.value == "/reset") {
                     bestScore.innerHTML = "0";
                     localStorage.setItem("bestScoreRegistered", "0");
@@ -269,7 +526,7 @@ window.onload = function() {
                         }
                     }
                 }
-            }
+            }*/
             cheatInput.value = "";
         }
     }
@@ -295,7 +552,10 @@ window.onload = function() {
     crane.addEventListener("click", displayInput);
 
     var startGame = function() {
-        animeBorders.pause();
+        if (animeBorders)
+        {
+            animeBorders.pause();
+        }
         crane.removeEventListener("click", displayInput);
         pause = false;
         // <===== Reset vie =====>
@@ -306,6 +566,8 @@ window.onload = function() {
         scored(-1);
 
         // <===== Display des menus et du jeu =====>
+        var menu = document.getElementById("menu");
+        menu.style.display = "none";
         var elMenu = document.querySelectorAll("div#menu *");
         for (let i = 0; i < elMenu.length; i++) {
             elMenu[i].style.display = "none";
@@ -335,10 +597,19 @@ window.onload = function() {
         animeScore();
         crane.addEventListener("click", displayInput);
         // <===== Display des menus et du jeu =====>
+        var menu = document.getElementById("menu");
+        menu.style.display = "";
         var elMenu = document.querySelectorAll("div#menu *");
         for (let i = 0; i < elMenu.length; i++) {
             elMenu[i].style.display = "";
         }
+        auth.onAuthStateChanged(currentuser => {
+        //Display bouton de déco (compte google)
+        if (currentuser) {
+            const logout = document.querySelector('#logout');
+            logout.style.display = 'block';
+        }
+        });
         var elMenuInter = document.querySelectorAll("div#menuIntermediaire *");
         for (let i = 0; i < elMenuInter.length; i++) {
             elMenuInter[i].style.display = "none";
@@ -372,35 +643,30 @@ window.onload = function() {
         // <===== Temps =====>
         let secondes = document.getElementById("secondes");
         let minutes = document.getElementById("minutes");
-        secondes.innerHTML = "0 seconde";
-        minutes.innerHTML = "0 minute et ";
+        secondes.innerHTML = "00";
+        minutes.innerHTML = "0:";
         var chrono = function() {
             let compteur = parseInt(secondes.innerHTML)+1;
+            let compteurMin = 0;
             if (compteur ==  20 || compteur == 40) {
                 scored(20);
             }
             if (compteur < 60) {
-                if (compteur <= 1) {
-                    secondes.innerHTML = compteur + " seconde";
+                if (compteur <= 9) {
+                    secondes.innerHTML = "0" + compteur;
                 }
                 else {
-                    secondes.innerHTML = compteur + " secondes";
+                    secondes.innerHTML = compteur + "";
                 }
             }
             else {
                 compteurMin = parseInt(minutes.innerHTML) + 1;
-                if (compteurMin == 1) {
-                    minutes.innerHTML = compteurMin + " minute et "
-                    secondes.innerHTML = "0 seconde";
-                }
-                else {
-                    minutes.innerHTML = compteurMin + " minutes et "
-                    secondes.innerHTML = "0 seconde";
-                }
+                minutes.innerHTML = compteurMin + ":"
+                secondes.innerHTML = "00";
                 scored(50);
             }
         }
-        boucleTemps = setInterval(chrono, 1000);
+        let boucleTemps = setInterval(chrono, 1000);
 
         // <===== Canvas =====>
         let canvas = document.getElementById('zoneJeu');
@@ -507,6 +773,11 @@ window.onload = function() {
 
         let compteurSM = 0;
         let tabMunMob = [];
+
+        let RID;
+        let RID2;
+        let EXPL;
+        let EXPL2;
           
         function gameLoop() {
             // <===== Nettoyage =====>
@@ -812,7 +1083,7 @@ window.onload = function() {
             }
             // <===== Explosions des rockets =====>
             for (let i = 0; i < tabExplosions.length; i++) {
-                explo = tabExplosions[i];
+                let explo = tabExplosions[i];
                 if (explo.frameExplosion > 0) {
                     ctx.drawImage(explosion, 0, 0, explo.width, explo.height, explo.xExplosion, explo.yExplosion, explo.width*1.7, explo.height*1.7);
                     explo.frameExplosion = explo.frameExplosion-1;
@@ -887,7 +1158,18 @@ window.onload = function() {
                 }
                 gold.innerHTML = parseInt(gold.innerHTML) + Math.floor(parseInt(displayScore.innerHTML)/10);
                 saveGold = gold.innerHTML;
-                localStorage.setItem("currentGold", saveGold);
+                auth.onAuthStateChanged(currentuser => {
+                //Sauvegarde Gold
+                if (currentuser) {
+                    set(ref(db, 'users/' + currentuser.uid + '/currentGold'), {
+                        currentGold : saveGold
+                    });
+                }
+                else {
+                    //Utilisateur déconnecté
+                    localStorage.setItem("currentGold", saveGold);
+                }
+                });
                 var ajoutGold = document.getElementById("goldEnPlus");
                 ajoutGold.innerHTML = " +" + Math.floor(parseInt(displayScore.innerHTML)/10);
                 anime({
@@ -1338,7 +1620,18 @@ window.onload = function() {
         let scoreSTR = "";
         function updateScore(bs) {
             scoreSTR = "" + bs;
-            localStorage.setItem("bestScoreRegistered", scoreSTR);
+            auth.onAuthStateChanged(currentuser => {
+            //Sauvegarde bestScore
+            if (currentuser) {
+                set(ref(db, 'users/' + currentuser.uid + '/bestScore'), {
+                    bestScore : scoreSTR
+                });
+            }
+            else {
+                //Utilisateur déconnecté
+                localStorage.setItem("bestScoreRegistered", scoreSTR);
+            }
+            });
         }
     }
 }

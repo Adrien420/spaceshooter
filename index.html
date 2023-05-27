@@ -1,40 +1,47 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<html lang="fr">
 
     <head>
         <title>Spaceshooter</title>
-        <meta charset="UTF-8" />
+        <link rel="icon" type="image/x-icon" href="images/Mob1.png">
+        <meta charset="UTF-8">
 
-        <link type="text/css" rel="stylesheet" href="style/style_NomJeu.css" />
+        <link type="text/css" rel="stylesheet" href="style/style_NomJeu.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
-        <script src="script/Tests.js"></script>
+        <script type="module" src="script/Tests.js"></script>
     </head>
 
 
     <body id="body">
-
-        <div id="googleLogin">
-            <button id="login">Google Login</button>
-            <button id="signOut">Déconnection</button>
-        </div>
-
-        <div id="divGold">
-            <img id="imgGold" src="images/gold.png" alt="or"/><span> x</span><span id="gold">0</span><span id="goldEnPlus"></span>
-        </div>
         
         <div id="menu">
+        
+            <div id="googleAccount">
+                <button id="login"><img id="imLogin" src="images/GLogo.png" alt="Logo Google" referrerpolicy="no-referrer"></button>
+
+                <button id="logout"><img id="imLogout" src="images/logoDeco.png" alt="Logo Deconnexion"></button>
+            </div>
+
+            <div id="pseudo">
+                <input id="txtPseudo" type="text" maxlength="10" placeholder="joueur" size="12">
+            </div>
+
+            <div id="divGold">
+                <img id="imgGold" src="images/gold.png" alt="or"><span> x</span><span id="gold">0</span><span id="goldEnPlus"></span>
+            </div>
+
             <button id="start">Start</button>
 
             <div id="choixMunitions">
                 <div class="case">
-                    <img id="mun1" class="chosen" src="images/munition.png" alt="munition basique" width="20" height="50"/>
+                    <img id="mun1" class="chosen" src="images/munition.png" alt="munition basique" width="20" height="50">
                 </div>
                 <div class="case">
-                    <img id="mun2" class="unlock" src="images/energyBall.png" alt="munition multiple" width="40" height="40" />
+                    <img id="mun2" class="unlock" src="images/energyBall.png" alt="munition multiple" width="40" height="40">
                     <span id="2price" class="price">500</span>
                 </div>
                 <div class="case">
-                    <img id="mun3" class="unlock" src="images/rocket.png" alt="munition explosive" width="20" height="50" />
+                    <img id="mun3" class="unlock" src="images/rocket.png" alt="munition explosive" width="20" height="50">
                     <span id="3price" class="price">1000</span>
                 </div>
             </div>
@@ -51,19 +58,19 @@
             </div>
 
             <div id="backgroundCheat"></div>
-            <img id="cheat" src="images/crane.png" alt="Tete de mort" />
-            <input id="cheatInput" maxlength="13" size="16" />
+            <img id="cheat" src="images/crane.png" alt="Tete de mort">
+            <input id="cheatInput" maxlength="13" size="16">
         </div>
 
         <div id="jeu">
             <div id="temps">
-                <span>Durée: </span><span id="minutes">0 minute et </span><span id="secondes">0 seconde</span>
+                <span id="minutes">0:</span><span id="secondes">00</span>
             </div>
 
             <div id="vie">
-                <img id="vie1" src="images/coeurPlein.png" alt="coeur plein" />
-                <img id="vie2" src="images/coeurPlein.png" alt="coeur plein" />
-                <img id="vie3" src="images/coeurPlein.png" alt="coeur plein" />
+                <img id="vie1" src="images/coeurPlein.png" alt="coeur plein">
+                <img id="vie2" src="images/coeurPlein.png" alt="coeur plein">
+                <img id="vie3" src="images/coeurPlein.png" alt="coeur plein">
             </div>
 
             <div id="score">
@@ -91,59 +98,9 @@
             <button id="goHome"></button>
         </div>
 
+        <script type="module" src="script/firebase_google.js"></script>
+
     </body>
-    <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-        apiKey: "AIzaSyAByHFKlgTGylA4QYKJMC9VRHMk4O6-6XI",
-        authDomain: "spaceshooter-adproject.firebaseapp.com",
-        databaseURL: "https://spaceshooter-adproject-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "spaceshooter-adproject",
-        storageBucket: "spaceshooter-adproject.appspot.com",
-        messagingSenderId: "320120443653",
-        appId: "1:320120443653:web:0fc508daaefbf8d20e5d6c",
-        measurementId: "G-FYB7YD8P2L"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider(app);
-
-    login.addEventListener('click',(e) => {
-        signInWithPopup(auth, provider)
-        .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // ...
-        }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-        });
-    });
-    signOut.addEventListener('click',(e) => {
-        signOut(auth).then(() => {
-        // Sign-out successful.
-        }).catch((error) => {
-        // An error happened.
-        });
-    });
-
-</script>
 </html>
+
