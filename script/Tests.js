@@ -21,7 +21,7 @@ window.onload = function() {
     const auth = getAuth(app);
 
     // <===== Initialisation des variables =====>
-    var pseudo = document.getElementById("txtPseudo");
+    let pseudo = document.getElementById("txtPseudo");
 
     let pause = false;
     let mouseEventActif = false;
@@ -62,13 +62,19 @@ window.onload = function() {
             });
             const bestScoreRef = ref(db, 'users/' + currentuser.uid + '/bestScore');
             get(bestScoreRef).then((snapshot) => {
-                if ((snapshot.exists() == false && localStorage.getItem("bestScoreRegistered")) || localStorage.getItem("bestScoreRegistered") > snapshot.val().bestScore) {
+                if (snapshot.exists() == false && localStorage.getItem("bestScoreRegistered")) {
                     set(ref(db, 'users/' + currentuser.uid + '/bestScore'), {
                         bestScore : localStorage.getItem("bestScoreRegistered")
                     });
-                    console.log(localStorage.getItem("bestScoreRegistered"));
-                    console.log(bestScore);
                     bestScore.innerHTML = localStorage.getItem("bestScoreRegistered");
+                }
+                if (snapshot.exists()) {
+                    if (localStorage.getItem("bestScoreRegistered") > snapshot.val().bestScore) {
+                        set(ref(db, 'users/' + currentuser.uid + '/bestScore'), {
+                            bestScore : localStorage.getItem("bestScoreRegistered")
+                        });
+                        bestScore.innerHTML = localStorage.getItem("bestScoreRegistered");
+                    }
                 }
             }).catch((error) => {
                 console.error('Erreur lors de la lecture des utilisateurs:', error);
@@ -88,20 +94,114 @@ window.onload = function() {
         } 
     });
 
+    // <===== Tableau des meilleurs scores =====>
+
+    //Affichage
+    for (let i=1;i<11;i++) {
+        let rankRef = ref(db, 'rank/' + i + 'eme');
+        get(rankRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                let rank = snapshot.val();
+                let pseudoDisplay = document.getElementById(i+"pseudo");
+                pseudoDisplay.innerHTML = rank.pseudo;
+                let scoreDisplay = document.getElementById(i+"score"); 
+                scoreDisplay.innerHTML = rank.score;
+            } else {
+                console.log('Aucun score trouvé');
+            }
+        }).catch((error) => {
+            console.error('Erreur lors de la lecture des utilisateurs:', error);
+        });
+    }
+
+    //Fonctions de comparaison
+    function down(i, scoreRank) {
+        console.log("down");
+        if (i<10) {
+            let j = i+1;
+            //On baisse d'un cran le score
+            let scoreDown = document.getElementById(i + "score");
+            let scoreReplaced = document.getElementById(j + "score");
+            scoreReplaced.innerHTML = scoreDown.innerHTML;
+            //On baisse d'un cran le pseudo lié
+            let pseudoDown = document.getElementById(i + "pseudo");
+            let pseudoReplaced = document.getElementById(j + "pseudo");
+            pseudoReplaced.innerHTML = pseudoDown.innerHTML;
+            set(ref(db, 'rank/' + j + 'eme'), {
+                pseudo : pseudoDown.innerHTML,
+                score : scoreDown.innerHTML
+            });
+            if (i==1) {
+                scoreDown.innerHTML = scoreRank;
+                if (!(pseudo.value == "")) {
+                    console.log(pseudo.value);
+                    pseudoDown.innerHTML = pseudo.value;
+                    set(ref(db, 'rank/' + i + 'eme'), {
+                        pseudo : pseudo.value,
+                        score : scoreRank
+                    });
+                } else {
+                    console.log("pseudonull");
+                    pseudoDown.innerHTML = "joueur";
+                    set(ref(db, 'rank/' + i + 'eme'), {
+                        pseudo : "joueur",
+                        score : scoreRank
+                    });
+                }
+            }
+        }
+    }
+
+    function bestScoreRank(scoreRank) {
+        console.log(scoreRank);
+        let i = 10;
+        let best = true;
+        console.log(best);
+        console.log(i);
+        while (i>0 && best) {
+            let j = i+1;
+            console.log(i);
+            let actualScore = document.getElementById(i + "score");
+            if (!(actualScore.innerHTML == "-")) {
+                if (parseInt(actualScore.innerHTML) >= parseInt(scoreRank) && !(i == 10)) {
+                    let scoreReplaced = document.getElementById(j + "score");
+                    scoreReplaced.innerHTML = scoreRank;
+                    let pseudoReplaced = document.getElementById(j + "pseudo");
+                    if (!(pseudo.value == "")) {
+                        pseudoReplaced.innerHTML = pseudo.value;
+                        set(ref(db, 'rank/' + i + 'eme'), {
+                            pseudo : pseudo.value,
+                            score : scoreRank
+                        });
+                    } else {
+                        pseudoReplaced.innerHTML = "joueur";
+                        set(ref(db, 'rank/' + i + 'eme'), {
+                            pseudo : "joueur",
+                            score : scoreRank
+                        });
+                    }
+                    best = false;
+                }
+                else {
+                    down(i,scoreRank);
+                }
+            } else {
+                down(i,scoreRank);
+            }
+            i--;
+        }
+    }
+
     // <===== Pseudo =====>
     function dbPseudo() {
         auth.onAuthStateChanged(currentuser => {
             if (currentuser) {
             const PORef = ref(db, 'users/' + currentuser.uid + '/pseudo');
             get(PORef).then((snapshot) => {
-                if (pseudo.value == snapshot.val().pseudo) {
-                    console.log("test2");
+                if (!(pseudo.value == "")) {
                     set(ref(db, 'users/' + currentuser.uid + '/pseudo'), {
                         pseudo: pseudo.value
                     });
-                }
-                else {
-                    //Utilisateur déconnecté
                 }
             }).catch((error) => {
                 console.error('Erreur lors de la lecture des utilisateurs:', error);
@@ -125,6 +225,21 @@ window.onload = function() {
     }).catch((error) => {
         console.error('Erreur lors de la lecture des utilisateurs:', error);
     });*/
+
+    // <===== Parametres =====>
+    let menuParametre = document.getElementById("parametres");
+    let openParametre = document.getElementById("imgParametre");
+    let closeParametre = document.getElementById("croix");
+
+    function displayParametre() {
+        menuParametre.style.display = "block";
+    }
+    openParametre.addEventListener("click", displayParametre);
+
+    function hideParametre() {
+        menuParametre.style.display = "none";
+    }
+    closeParametre.addEventListener("click", hideParametre);
 
     // <===== Vie =====>
     function vie(nvie) {
@@ -788,25 +903,24 @@ window.onload = function() {
 
             // <===== Touches =====>
             let hasMoved = false;
-
-            if (keyPresses.z) {
+            if (keyPresses.z || keyPresses.arrowup) {
                 //keyPresses.z donne la valeur associée à la touche z qui est un booléen (true = touche pressée, false sinon)
                 moveCharacter(0, -MOVEMENT_SPEED, FACING_UP);
                 //MOVEMENT_SPEED va ici déterminer la translation selon y, dans un canvas, translation négative pour y = aller vers le heut
                 hasMoved = true;
-            } else if (keyPresses.s) {
+            } else if (keyPresses.s || keyPresses.arrowdown) {
                 moveCharacter(0, MOVEMENT_SPEED, FACING_DOWN);
                 hasMoved = true;
             }
-            if (keyPresses.q) {
+            if (keyPresses.q || keyPresses.arrowleft) {
                 moveCharacter(-MOVEMENT_SPEED, 0, FACING_LEFT);
                 //Translation négative pour x = aller vers la gauche
                 hasMoved = true;
-            } else if (keyPresses.d) {
+            } else if (keyPresses.d || keyPresses.arrowright) {
                 moveCharacter(MOVEMENT_SPEED, 0, FACING_RIGHT);
                 hasMoved = true;
             }
-            if (keyPresses.shift) {
+            if (keyPresses.shift || keyPresses.c) {
                 MOVEMENT_SPEED = 2;
             }
             else {
@@ -1151,6 +1265,7 @@ window.onload = function() {
                 window.cancelAnimationFrame(RID);
                 window.cancelAnimationFrame(RID2);
                 var displayScore = document.getElementById("displayscore");
+                bestScoreRank(displayScore.innerHTML);
                 var bestScore = document.getElementById("bestScore");
                 if (parseInt(displayScore.innerHTML) > parseInt(bestScore.innerHTML)) {
                     bestScore.innerHTML = displayScore.innerHTML;

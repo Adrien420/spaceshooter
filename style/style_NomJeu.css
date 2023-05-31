@@ -78,6 +78,187 @@ html, body {
   overflow: hidden;
 }
 
+/* Parametres */
+#fondParametre {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 45px;
+  height: 45px;
+  padding: 2px;
+  cursor: pointer;
+  border-radius: 30px;
+  background-color: #b2b2b2;
+}
+
+#imgParametre {
+  position: absolute;
+  top : 50%;
+  left : 50%;
+  transform: translate(-50%,-50%);
+  width: 40px;
+}
+
+#parametres {
+  display: none;
+  position: absolute;
+  top : 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;;
+  z-index: 2;
+  transform: translate(-50%,-50%);
+  background-image: radial-gradient(circle at 50% 50%, #373b52, #252736 51%, #1d1e26);
+  border: 3px outset black;
+  box-shadow: 2px 2px 1px 1px rgba(68, 74, 95);
+}
+
+#parametresTxt {
+  position: absolute;
+  top : 2%;
+  left : 50%;
+  transform: translate(-50%);
+  font-size: 30px;
+}
+
+#croix {
+  position: absolute;
+  top : 10px;
+  right: 10px;
+  width: 30px;
+  cursor: pointer;
+}
+
+#toucheTxt {
+  position: absolute;
+  top : 12%;
+  left : 7%;
+  font-size: 22px;
+}
+
+#mvtTxt {
+  position: absolute;
+  top : 20%;
+  left : 50%;
+  transform: translate(-50%);
+  font-size: 20px;
+}
+
+
+.mvt {
+  position: absolute;
+  top : 32%;
+  width : 75px;
+  height: 67px;
+}
+
+#flechesD {
+  right: 25%;
+}
+
+#zqsd {
+  left: 25%;
+}
+
+.touche {
+  border : 2px white solid;
+  padding: 3px;
+}
+
+.haut {
+  position : absolute;
+  top : 0px;
+  left : 50%;
+  transform: translate(-50%);
+}
+
+.gauche {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.bas {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.droite {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
+#separationMvt {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  height: 67px;
+  border-right: 3px white solid;
+}
+
+#acceleration, #tir, #pause, #accelerationTxt, #separationAcc {
+  position: absolute;
+  left : 50%;
+  transform: translate(-50%);
+}
+
+#acceleration {
+  top : 50%;
+  width: 100%;
+  height: 75px;
+}
+
+#shiftBox {
+  position: absolute;
+  left: 25%;
+  bottom : 5px;
+}
+
+#shift {
+  margin-right: 10px;
+}
+
+#c {
+  position: absolute;
+  bottom : 0px;
+  right: 37%;
+}
+
+#separationAcc {
+  bottom : 0px;
+  height: 35px;
+  border-right: 3px white solid;
+}
+
+#tir {
+  top : 72%;
+}
+
+#pause {
+  top : 85%;
+}
+
+/* Rank */
+#rank {
+  position: absolute;
+  bottom: 30%;
+  left: 4%;
+  transform: translate(0px,50%);
+  border: 3px outset black;
+  box-shadow: 2px 2px 1px 1px rgba(68, 74, 95);
+  color: white;
+  text-align: center;
+}
+
+table, td, tr, th {
+  border: 1px #b2b2b2 solid;
+  padding: 2px;
+  background-color: #1e1f28;
+}
+
 /* Gold */
 #divGold {
   position: absolute;
@@ -117,6 +298,7 @@ html, body {
   left: 50%;
   top: 50%;
   transform: translate(-100px, -35px);
+  cursor: pointer;
 }
 
 #choixMunitions {
@@ -132,6 +314,7 @@ html, body {
   margin-bottom: 2px;
   background-color: #1d1e26;
   border: 2px black solid;
+  cursor: pointer;
 }
 
 .case img {
@@ -231,19 +414,19 @@ html, body {
 #cheat, #cheatInput, #backgroundCheat {
   position: absolute;
   right: 2px;
-  top : 2px;
+  bottom : 2px;
 }
 
 #cheat {
   right: 4px;
-  top: 4px;
+  bottom: 4px;
   z-index: 1;
 }
 
 #cheatInput {
   display: none;
   right: 40px;
-  top: 6px;
+  bottom: 6px;
   height: 19px;
   text-align: center;
   font-weight: bold;
