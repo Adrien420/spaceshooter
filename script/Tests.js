@@ -163,22 +163,24 @@ window.onload = function() {
             console.log(i);
             let actualScore = document.getElementById(i + "score");
             if (!(actualScore.innerHTML == "-")) {
-                if (parseInt(actualScore.innerHTML) >= parseInt(scoreRank) && !(i == 10)) {
-                    let scoreReplaced = document.getElementById(j + "score");
-                    scoreReplaced.innerHTML = scoreRank;
-                    let pseudoReplaced = document.getElementById(j + "pseudo");
-                    if (!(pseudo.value == "")) {
-                        pseudoReplaced.innerHTML = pseudo.value;
-                        set(ref(db, 'rank/' + i + 'eme'), {
-                            pseudo : pseudo.value,
-                            score : scoreRank
-                        });
-                    } else {
-                        pseudoReplaced.innerHTML = "joueur";
-                        set(ref(db, 'rank/' + i + 'eme'), {
-                            pseudo : "joueur",
-                            score : scoreRank
-                        });
+                if (parseInt(actualScore.innerHTML) >= parseInt(scoreRank)) {
+                    if (!(i==10)) {
+                        let scoreReplaced = document.getElementById(j + "score");
+                        scoreReplaced.innerHTML = scoreRank;
+                        let pseudoReplaced = document.getElementById(j + "pseudo");
+                        if (!(pseudo.value == "")) {
+                            pseudoReplaced.innerHTML = pseudo.value;
+                            set(ref(db, 'rank/' + j + 'eme'), {
+                                pseudo : pseudo.value,
+                                score : scoreRank
+                            });
+                        } else {
+                            pseudoReplaced.innerHTML = "joueur";
+                            set(ref(db, 'rank/' + j + 'eme'), {
+                                pseudo : "joueur",
+                                score : scoreRank
+                            });
+                        }
                     }
                     best = false;
                 }
@@ -374,7 +376,6 @@ window.onload = function() {
             }
             else {
                 //Utilisateur déconnecté
-                localStorage.setItem("classMunitions" + img.id[3], "unchosen");
             }
             });
             gold.innerHTML = parseInt(gold.innerHTML) - currentPrice; 
