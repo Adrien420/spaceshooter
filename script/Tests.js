@@ -365,6 +365,7 @@ window.onload = function() {
             document.getElementById(numId + "price").style.display = "none";
             img.className = "unchosen";
 
+            auth.onAuthStateChanged(currentuser => {
             //Sauvegarde unchosen
             if (currentuser) {
                 set(ref(db, 'users/' + currentuser.uid + '/mun' + img.id[3]), {
@@ -375,9 +376,10 @@ window.onload = function() {
                 //Utilisateur déconnecté
                 localStorage.setItem("classMunitions" + img.id[3], "unchosen");
             }
-
+            });
             gold.innerHTML = parseInt(gold.innerHTML) - currentPrice; 
             
+            auth.onAuthStateChanged(currentuser => {
             //Sauvegarde currentgold
             if (currentuser) {
                 set(ref(db, 'users/' + currentuser.uid + '/currentGold'), {
@@ -388,6 +390,7 @@ window.onload = function() {
                 //Utilisateur déconnecté
                 localStorage.setItem("currentGold", gold.innerHTML);
             }
+            });
 
             confirmPurchase.style.display = "none";
             alerteMun.innerHTML = "";
