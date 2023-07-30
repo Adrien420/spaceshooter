@@ -7,7 +7,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyAByHFKlgTGylA4QYKJMC9VRHMk4O6-6XI",
+    apiKey: process.env.FIREBASE_API_KEY,
     authDomain: "spaceshooter-adproject.firebaseapp.com",
     databaseURL: "https://spaceshooter-adproject-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "spaceshooter-adproject",
