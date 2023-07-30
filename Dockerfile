@@ -23,6 +23,5 @@ COPY --from=builder /app/dist/ /usr/share/nginx/html
 EXPOSE 80
 
 # Utilisez les secrets dans votre application JavaScript
-ENV FIREBASE_API_KEY=<votre_clé_api>
-ENV AUTH_KEY=<votre_auth_key>
+ENV API_KEY=<votre_clé_api>
 # Ajoutez d'autres secrets ici si nécessaire
