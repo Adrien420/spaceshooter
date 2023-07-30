@@ -23,7 +23,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: v1.0
+          tags: latest
         env:
           API_KEY: ${{ secrets.API_KEY }}
           # Ajoutez d'autres secrets ici si nécessaire
