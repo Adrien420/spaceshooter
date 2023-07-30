@@ -1,16 +1,8 @@
-# Étape 1 : Construire le frontend
-FROM node:latest as builder
-
-WORKDIR /app
-
-# Copiez le code du frontend dans le conteneur
-COPY frontend/ ./
-
-# Étape 2 : Servez le frontend avec Nginx
+# Étape 1 : Copier les fichiers du frontend dans le conteneur Nginx
 FROM nginx:latest
 
-# Copiez les fichiers du frontend construits dans le conteneur Nginx
-COPY --from=builder /app/dist/ /usr/share/nginx/html
+# Copiez les fichiers JavaScript du frontend dans le conteneur Nginx
+COPY frontend/ /usr/share/nginx/html
 
 # Exposez le port 80 pour le serveur Nginx
 EXPOSE 80
