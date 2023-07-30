@@ -1,0 +1,29 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - gh-pages  # Utilisez "gh-pages" pour déclencher le workflow lorsque des modifications sont poussées dans cette branche
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages  # Spécifiez la branche "gh-pages" pour les actions de checkout
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: your-docker-image-tag
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          AUTH_KEY: ${{ secrets.AUTH_KEY }}
+          # Ajoutez d'autres secrets ici si nécessaire
+
+      # Ajoutez ici les étapes pour le déploiement de votre jeu avec Docker, selon vos besoins.
