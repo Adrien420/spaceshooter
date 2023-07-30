@@ -23,5 +23,5 @@ COPY --from=builder /app/dist/ /usr/share/nginx/html
 EXPOSE 80
 
 # Utilisez les secrets dans votre application JavaScript
-ENV API_KEY=<votre_clé_api>
+ENV API_KEY=$API_KEY
 # Ajoutez d'autres secrets ici si nécessaire
