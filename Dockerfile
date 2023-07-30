@@ -4,7 +4,6 @@ FROM node:latest as builder
 WORKDIR /app
 
 # Copiez le code du frontend dans le conteneur
-COPY frontend/package.json frontend/package-lock.json ./
 COPY frontend/ ./
 
 # Installez les dépendances du frontend
