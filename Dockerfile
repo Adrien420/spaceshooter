@@ -6,12 +6,6 @@ WORKDIR /app
 # Copiez le code du frontend dans le conteneur
 COPY frontend/ ./
 
-# Installez les dépendances du frontend
-RUN npm install
-
-# Construisez le frontend (par exemple, si vous utilisez Webpack, Angular CLI, ou autre)
-RUN npm run build
-
 # Étape 2 : Servez le frontend avec Nginx
 FROM nginx:latest
 
