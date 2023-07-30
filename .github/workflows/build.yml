@@ -23,7 +23,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: latest
+          tags: docker.io/adrien420/imagev1.0
         env:
           API_KEY: ${{ secrets.API_KEY }}
           # Ajoutez d'autres secrets ici si nécessaire
