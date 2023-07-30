@@ -1,6 +1,6 @@
 version: "3.9"
 services:
   frontend:
-    image: docker.io/adrien420/frontend:v1.0
+    image: docker.io/adrien420/frontend:imagev1.0
     ports:
       - "80:80"
