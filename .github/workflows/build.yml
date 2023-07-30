@@ -22,8 +22,7 @@ jobs:
           push: true
           tags: your-docker-image-tag
         env:
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          AUTH_KEY: ${{ secrets.AUTH_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}
           # Ajoutez d'autres secrets ici si nécessaire
 
       # Ajoutez ici les étapes pour le déploiement de votre jeu avec Docker, selon vos besoins.
