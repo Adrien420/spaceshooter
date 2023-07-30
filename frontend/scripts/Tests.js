@@ -5,7 +5,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth
 window.onload = function() {
     // <===== Database =====>
     const firebaseConfig = {
-        apiKey: "AIzaSyAByHFKlgTGylA4QYKJMC9VRHMk4O6-6XI",
+        apiKey: process.env.API_KEY,
         authDomain: "spaceshooter-adproject.firebaseapp.com",
         databaseURL: "https://spaceshooter-adproject-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "spaceshooter-adproject",
