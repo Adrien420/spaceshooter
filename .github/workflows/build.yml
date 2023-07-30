@@ -15,6 +15,11 @@ jobs:
         with:
           ref: gh-pages  # Spécifiez la branche "gh-pages" pour les actions de checkout
           
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
