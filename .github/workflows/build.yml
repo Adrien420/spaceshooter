@@ -16,7 +16,7 @@ jobs:
           ref: gh-pages  # Spécifiez la branche "gh-pages" pour les actions de checkout
           
       - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
           
@@ -24,7 +24,7 @@ jobs:
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2.7.0
+        uses: docker/build-push-action@v3
         with:
           context: .
           push: true
