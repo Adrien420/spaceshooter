@@ -13,7 +13,7 @@ COPY frontend/script/ /usr/share/nginx/html/script
 COPY frontend/style/ /usr/share/nginx/html/css
 
 # Copiez le fichier HTML du frontend dans le répertoire approprié du conteneur Nginx
-COPY frontend/index.html /usr/share/nginx/html
+COPY index.html /usr/share/nginx/html
 
 # Copiez le fichier CNAME du frontend dans le répertoire approprié du conteneur Nginx
 COPY CNAME /usr/share/nginx/html
