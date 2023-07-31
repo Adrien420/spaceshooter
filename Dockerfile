@@ -7,7 +7,7 @@ RUN mkdir -p /usr/share/nginx/html/style
 RUN mkdir -p /usr/share/nginx/html/images
 
 # Copiez les fichiers JavaScript du frontend dans le répertoire approprié du conteneur Nginx
-COPY frontend/scripts/ /usr/share/nginx/html/scripts
+COPY frontend/script/ /usr/share/nginx/html/script
 
 # Copiez les fichiers CSS du frontend dans le répertoire approprié du conteneur Nginx
 COPY frontend/style/ /usr/share/nginx/html/css
