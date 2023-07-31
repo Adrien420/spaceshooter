@@ -4,3 +4,12 @@ services:
     image: docker.io/adrien420/frontend:imagev1.0
     ports:
       - "80:80"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - frontend
