@@ -7,19 +7,19 @@ RUN mkdir -p /usr/share/nginx/html/style
 RUN mkdir -p /usr/share/nginx/html/images
 
 # Copiez les fichiers JavaScript du frontend dans le répertoire approprié du conteneur Nginx
-COPY frontend/script/ /usr/share/nginx/html/script
+COPY script/ /usr/share/nginx/html/script
 
 # Copiez les fichiers CSS du frontend dans le répertoire approprié du conteneur Nginx
-COPY frontend/style/ /usr/share/nginx/html/css
+COPY style/ /usr/share/nginx/html/css
 
 # Copiez le fichier HTML du frontend dans le répertoire approprié du conteneur Nginx
-COPY frontend/index.html /usr/share/nginx/html
+COPY index.html /usr/share/nginx/html
 
 # Copiez le fichier CNAME du frontend dans le répertoire approprié du conteneur Nginx
 COPY CNAME /usr/share/nginx/html
 
 # Copiez les images du frontend dans le répertoire approprié du conteneur Nginx
-COPY frontend/images/ /usr/share/nginx/html/images
+COPY images/ /usr/share/nginx/html/images
 
 # Exposez le port 80 pour le serveur Nginx
 EXPOSE 80
