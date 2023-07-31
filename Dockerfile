@@ -2,7 +2,7 @@
 FROM nginx:latest
 
 # Créez des répertoires pour les fichiers JavaScript, CSS et images dans le conteneur Nginx
-RUN mkdir -p /usr/share/nginx/html/scripts
+RUN mkdir -p /usr/share/nginx/html/script
 RUN mkdir -p /usr/share/nginx/html/style
 RUN mkdir -p /usr/share/nginx/html/images
 
